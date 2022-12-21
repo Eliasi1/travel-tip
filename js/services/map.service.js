@@ -5,7 +5,8 @@ export const mapService = {
     addMarker,
     panTo,
     getLocationName,
-    getMap
+    getMap,
+    getLocationCoords
 }
 
 
@@ -66,6 +67,12 @@ function getLocationName(lat,lng){
     return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`)
     .then((value) => { return value.json()})
     .then((res)=> res.results[0].formatted_address)
+}
+
+function getLocationCoords(locationName){
+    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationName}&key=${API_KEY}`)
+    .then((value) => { return value.json()})
+    .then((res)=> res.results[0].geometry.location)
 }
 
 function getMap(){

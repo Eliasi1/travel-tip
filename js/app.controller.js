@@ -10,6 +10,7 @@ window.onGetUserPos = onGetUserPos
 window.onSelectLocation = onSelectLocation
 window.onDeleteLocation = onDeleteLocation
 window.onCopyLink = onCopyLink
+window.onSearch = onSearch
 
 function onInit() {
     mapService.initMap()
@@ -141,4 +142,21 @@ function renderFilterByQueryStringParams() {
     if (!filterBy.lat || !filterBy.lng) return
 
     onSelectLocation(filterBy.lat,filterBy.lng)
+}
+function onSearch(ev) {
+    ev.preventDefault()
+    const locationName = document.querySelector('.location-search').value
+    mapService.getLocationCoords(locationName)
+        .then(cords => {
+            const { lat, lng } = cords
+            mapService.getLocationName(lat, lng).then((locationName) => {
+                mapService.panTo(lat, lng)
+                mapService.addMarker(cords)
+                const locObj = { id: null, name: locationName, lat, lng, createdAt: Date.now(), updatedAt: null }
+                placeService.save(locObj)
+                    .then(() => {
+                        onGetLocs()
+                    })
+            })
+        })
 }
