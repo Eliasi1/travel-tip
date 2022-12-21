@@ -95,9 +95,3 @@ function onDeleteLocation(id, ev){
     placeService.remove(id)
         .then(renderLocCards)
 }
-
-function onDeleteLocation(id, ev){
-    ev.stopPropagation()
-    placeService.remove(id)
-        .then(renderLocCards)
-}
