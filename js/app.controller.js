@@ -19,9 +19,25 @@ function onInit() {
 
     placeService.query()
         .then(console.log)
+
+    mapService.getMap()
+        .then(map => {
+            console.log(map)
+            map.addListener("click", (mapsMouseEvent) => {
+                let loc = mapsMouseEvent.latLng.toJSON()
+                mapService.addMarker(loc)
+                mapService.getLocationName(loc.lat, loc.lng).then((locationName) => {
+                    const locObj = { id: null, name: locationName, lat: loc.lat, lng: loc.lng, createdAt: Date.now(), updatedAt: null }
+                    placeService.save(locObj)
+                        .then(() => {
+                            onGetLocs()
+                        })
+                })
+            })
+        })
 }
 
-    
+
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
@@ -48,9 +64,9 @@ function onGetUserPos() {
             console.log('User position is:', pos.coords)
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
-                mapService.panTo(pos.coords.latitude,pos.coords.longitude)
-                let locObj = {lat: pos.coords.latitude, lng: pos.coords.longitude }
-                mapService.addMarker(locObj)
+            mapService.panTo(pos.coords.latitude, pos.coords.longitude)
+            let locObj = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+            mapService.addMarker(locObj)
         })
         .catch(err => {
             console.log('err!!!', err)
@@ -83,19 +99,19 @@ function renderLocCards(value) {
 
 }
 
-function onSelectLocation(lat,lng,id) {
+function onSelectLocation(lat, lng, id) {
     console.log('lat:', lat)
     console.log('lng:', lng)
-    mapService.getLocationName(lat,lng).then((locationName) =>{
+    mapService.getLocationName(lat, lng).then((locationName) => {
         document.querySelector(".location-name span").innerText = locationName
     })
-    mapService.panTo(lat,lng)
-    const locObg = {lat, lng}
+    mapService.panTo(lat, lng)
+    const locObg = { lat, lng }
     mapService.addMarker(locObg)
-    
+
 }
 
-function onDeleteLocation(id, ev){
+function onDeleteLocation(id, ev) {
     ev.stopPropagation()
     placeService.remove(id)
         .then(renderLocCards)

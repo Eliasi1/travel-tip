@@ -12,6 +12,7 @@ export const mapService = {
 // Var that is used throughout this Module (not global)
 var gMap
 var gMarker
+let gSavedRes
 const API_KEY = 'AIzaSyBzYOvWP9Fcn5o3hqah4fNiufkLax8i_Hg'
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -24,26 +25,13 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
+            gSavedRes(gMap)
             gMarker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 gMap,
                 title: "click to zoom"
             })
-
-            console.log('Map!', gMap)
         })
-        .then(() => {
-            gMap.addListener("click", (mapsMouseEvent) => {
-                let loc = mapsMouseEvent.latLng.toJSON()
-                    addMarker(loc)
-                    getLocationName(loc.lat,loc.lng).then((locationName) => {
-                        const locObj = {id:null,name: locationName, lat:loc.lat, lng:loc.lng, createdAt: Date.now(), updatedAt:null}
-                        placeService.save(locObj)
-                        
-                    })
-                });
-        }
-        )
 }
 
 function addMarker(loc) {
@@ -81,5 +69,7 @@ function getLocationName(lat,lng){
 }
 
 function getMap(){
-    return Promise.resolve(gMap)
+    return new Promise((res, rej) => {
+        gSavedRes = res
+    })
 }
