@@ -37,8 +37,13 @@ body {
 #weather {
     background-color: #eee;
     color: #161616;
+    width: 100%;
+    margin-bottom: 1em;
 }
 
+#map {
+    width: 100%;
+}
 
 .card {
     background-color: #161616;
@@ -147,4 +152,17 @@ input[type="text"] {
     .button-62 {
         margin-bottom: 0;
     }
+
+    .map-and-weather {
+        flex-direction: row;
+    }
+
+    #map {
+        width: 49%;
+    }
+
+    #weather {
+width: 49%;
+    }
+
 }

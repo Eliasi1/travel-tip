@@ -168,6 +168,7 @@ function onSearch(ev) {
 function renderWeatherData(lan,lng){
 const res = weatherServices.getWeatherData(lan,lng)
 res.then((value)=>{
+    document.querySelector(".weather-data").style.display='block'
     document.querySelector(".weather-data .tempMin").innerText = value.main.temp_min
     document.querySelector(".weather-data .tempMax").innerText = value.main.temp_max
     document.querySelector(".weather-data .feelsLike").innerText = value.main.feels_like
