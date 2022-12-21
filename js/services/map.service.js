@@ -39,7 +39,7 @@ function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
         map: gMap,
-        icon: `../../img/icons/cat-head.png`,
+        icon: '../../img/icons/cat-head.png',
         title: 'Hello World!'
     })
     return marker
