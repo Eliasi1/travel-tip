@@ -7,10 +7,11 @@ export const mapService = {
 
 // Var that is used throughout this Module (not global)
 var gMap
+var gMarker
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
-    return _connectGoogleApi()
+     _connectGoogleApi()
         .then(() => {
             console.log('google available')
             gMap = new google.maps.Map(
@@ -18,8 +19,28 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
+            gMarker = new google.maps.Marker({
+                position: {lat: lat, lng:lng},
+                gMap,
+                title: "click to zoom"
+            })
+            
             console.log('Map!', gMap)
         })
+        .then(()=>{
+        gMap.addListener("center_changed", () => {
+            // 3 seconds after the center of the map has changed, pan back to the
+            // marker.
+            window.setTimeout(() => {
+                gMap.panTo(gMarker.getPosition());
+            }, 3000);
+          });
+        gMarker.addListener("click", () => {
+            gMap.setZoom(8);
+            gMap.setCenter(gMarker.getPosition());
+          });
+        }
+        )
 }
 
 function addMarker(loc) {
@@ -39,7 +60,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = '' //TODO: Enter your API Key
+    const API_KEY = 'AIzaSyCfj12uTGB5hQRSXpEImSYdyAm_fF65I5w' //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script')
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
     elGoogleApi.async = true
