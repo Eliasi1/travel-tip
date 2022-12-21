@@ -1,6 +1,7 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 import { placeService } from './services/place.service.js'
+import { weatherServices } from './services/weather.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -28,6 +29,7 @@ function onInit() {
             map.addListener("click", (mapsMouseEvent) => {
                 let loc = mapsMouseEvent.latLng.toJSON()
                 mapService.addMarker(loc)
+                renderWeatherData(loc.lat, loc.lng)
                 mapService.getLocationName(loc.lat, loc.lng).then((locationName) => {
                     const locObj = { id: null, name: locationName, lat: loc.lat, lng: loc.lng, createdAt: Date.now(), updatedAt: null }
                     placeService.save(locObj)
@@ -119,6 +121,7 @@ function onSelectLocation(lat, lng, id) {
     const locObg = { lat, lng }
     mapService.addMarker(locObg)
     window.scrollTo(0, 0)
+    renderWeatherData(lat,lng)
 }
 
 function onDeleteLocation(id, ev) {
@@ -152,6 +155,7 @@ function onSearch(ev) {
             mapService.getLocationName(lat, lng).then((locationName) => {
                 mapService.panTo(lat, lng)
                 mapService.addMarker(cords)
+                renderWeatherData(lat,lng)
                 const locObj = { id: null, name: locationName, lat, lng, createdAt: Date.now(), updatedAt: null }
                 placeService.save(locObj)
                     .then(() => {
@@ -159,4 +163,15 @@ function onSearch(ev) {
                     })
             })
         })
+}
+
+function renderWeatherData(lan,lng){
+const res = weatherServices.getWeatherData(lan,lng)
+res.then((value)=>{
+    document.querySelector(".weather-data .tempMin").innerText = value.main.temp_min
+    document.querySelector(".weather-data .tempMax").innerText = value.main.temp_max
+    document.querySelector(".weather-data .feelsLike").innerText = value.main.feels_like
+    document.querySelector(".weather-desc").innerText = value.weather[0].main
+    document.querySelector(".weather-data .windSpeed").innerText = value.wind.speed
+})
 }

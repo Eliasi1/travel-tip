@@ -34,6 +34,12 @@ body {
 }
 
 /* MAIN */
+#weather {
+    background-color: #eee;
+    color: #161616;
+}
+
+
 .card {
     background-color: #161616;
     border-radius: 1em;
