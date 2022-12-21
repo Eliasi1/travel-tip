@@ -11,7 +11,7 @@ var gMarker
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
-     _connectGoogleApi()
+    return _connectGoogleApi()
         .then(() => {
             console.log('google available')
             gMap = new google.maps.Map(
@@ -20,25 +20,24 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 15
             })
             gMarker = new google.maps.Marker({
-                position: {lat: lat, lng:lng},
+                position: { lat: lat, lng: lng },
                 gMap,
                 title: "click to zoom"
             })
-            
+
             console.log('Map!', gMap)
         })
-        .then(()=>{
-        gMap.addListener("center_changed", () => {
-            // 3 seconds after the center of the map has changed, pan back to the
-            // marker.
-            window.setTimeout(() => {
-                gMap.panTo(gMarker.getPosition());
-            }, 3000);
-          });
-        gMarker.addListener("click", () => {
-            gMap.setZoom(8);
-            gMap.setCenter(gMarker.getPosition());
-          });
+        .then(() => {
+            gMap.addListener("center_changed", () => {
+                // 3 seconds after the center of the map has changed, pan back to the
+                // marker.
+                window.setTimeout(() => {
+                    gMap.panTo(gMarker.getPosition());
+                }, 3000);
+            });
+            gMap.addListener("click", (mapsMouseEvent) => {
+                    addMarker(mapsMouseEvent.latLng.toJSON())
+                });
         }
         )
 }
