@@ -8,6 +8,7 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onSelectLocation = onSelectLocation
+window.onDeleteLocation = onDeleteLocation
 
 function onInit() {
     mapService.initMap()
@@ -59,9 +60,9 @@ function renderLocCards(value) {
     const strHTML = value.map((location) => {
         const { id, name, lat, lng, createdAt, updatedAt } = location
         return `
-                <div class="card" onclick="onSelectLocation(${lat}, ${lng}, ${id})">
+                <div class="card" onclick="onSelectLocation(${lat}, ${lng}, '${id}')">
                     <h2 class="name">Name: <span>${name}</span></h2>
-                    <button class="loc-remove-btn" onclick="onDeleteLocation(${id})">🗑️</button>
+                    <button class="loc-remove-btn" onclick="onDeleteLocation('${id}', event)">🗑️</button>
                     <div class="location-info flex space-between">
                         <h3 class="lat">Lat: <span>${lat}</span></h3>
                         <h3 class="lng">Lng: <span>${lng}</span></h3>
@@ -87,4 +88,16 @@ function onSelectLocation(lat,lng,id) {
     const locObg = {lat, lng}
     mapService.addMarker(locObg)
     
+}
+
+function onDeleteLocation(id, ev){
+    ev.stopPropagation()
+    placeService.remove(id)
+        .then(renderLocCards)
+}
+
+function onDeleteLocation(id, ev){
+    ev.stopPropagation()
+    placeService.remove(id)
+        .then(renderLocCards)
 }
