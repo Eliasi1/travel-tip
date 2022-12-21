@@ -9,6 +9,7 @@ window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onSelectLocation = onSelectLocation
 window.onDeleteLocation = onDeleteLocation
+window.onCopyLink = onCopyLink
 window.onSearch = onSearch
 
 function onInit() {
@@ -35,8 +36,15 @@ function onInit() {
                         })
                 })
             })
-        })
+        }).then(()=> renderFilterByQueryStringParams())
+        
 }
+
+
+
+
+
+
 
 
 
@@ -85,6 +93,7 @@ function renderLocCards(value) {
                 <div class="card" onclick="onSelectLocation(${lat}, ${lng}, '${id}')">
                     <h2 class="name">Name: <span>${name}</span></h2>
                     <button class="loc-remove-btn" onclick="onDeleteLocation('${id}', event)">🗑️</button>
+                    <button class="link-copt-btn" onclick="onCopyLink('${lat}', ${lng})">🔗</button>
                     <div class="location-info">
                         <h3 class="lat">Lat: <span>${lat}</span></h3>
                         <h3 class="lng">Lng: <span>${lng}</span></h3>
@@ -118,6 +127,22 @@ function onDeleteLocation(id, ev) {
         .then(renderLocCards)
 }
 
+function onCopyLink(lat,lng){
+const modURL = `https://eliasi1.github.io/travel-tip/?lat=${lat}&lng=${lng}`
+navigator.clipboard.writeText(modURL)
+}
+
+function renderFilterByQueryStringParams() {
+    const queryStringParams = new URLSearchParams(window.location.search)
+    const filterBy = {
+        lat : queryStringParams.get('lat') || '',
+        lng : +queryStringParams.get('lng') || '',
+    }
+
+    if (!filterBy.lat || !filterBy.lng) return
+
+    onSelectLocation(filterBy.lat,filterBy.lng)
+}
 function onSearch(ev) {
     ev.preventDefault()
     const locationName = document.querySelector('.location-search').value
