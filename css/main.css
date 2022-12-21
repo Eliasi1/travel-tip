@@ -2,6 +2,51 @@ body {
 background-color: aqua;
 }
 
+/* HELPERS */ 
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-centerx {
+    justify-self: center;
+}
+
+.align-centery {
+    align-self: center;
+}
+
+/* MAIN */
+.card {
+    background-color: #ffc6a2;
+    border-radius: 10px;
+    width: 50vw;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.card h3 {
+    margin: 10px;
+}
+
+.card h2 {
+    margin: 10px;
+}
+
+
+
+
+
+
+
+
 
 /* CSS */
 .button-62 {

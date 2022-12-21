@@ -34,8 +34,7 @@ function onAddMarker() {
 
 function onGetLocs() {
     placeService.query().then(locs => {
-        console.log('Locations:', locs)
-        document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+        renderLocCards(locs)
     })
 }
 
@@ -53,4 +52,29 @@ function onGetUserPos() {
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
+}
+
+function renderLocCards(value){
+    const strHTML = value.map((location)=>{
+    const {id,name,lat,lng,createdAt,updatedAt} = location
+    return `
+    <div class="card" onclick="onSelectLocation({lat:${lat}, lng:${lng}, id: ${id}})">
+    <h2 class="name">Name: <span>${name}</span></h2>
+    <button class="loc-remove-btn" onclick="onDeleteLocation(${id})">🗑️</button>
+    <div class="location-info flex space-between">
+    <h3 class="lat">Lat: <span>${lat}</span></h3>
+    <h3 class="lng">Lng: <span>${lng}</span></h3>    </div>
+<h3 class="createdAt">created At: <span>${createdAt}</span></h3>
+<h3 class="updatedAt">updated At: <span>${updatedAt}</span></h3>
+</div>
+    `
+    }
+    ).join("")
+    document.querySelector('.table').innerHTML = strHTML
+
+    
+}
+
+function onSelectLocation(locObj){
+    console.log(locObj)
 }
