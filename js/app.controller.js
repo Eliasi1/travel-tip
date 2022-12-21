@@ -77,11 +77,14 @@ function renderLocCards(value) {
 
 }
 
-function onSelectLocation(locObj){
-    console.log(locObj)
-}
-
-
-function onSelectLocation(locObj) {
-    console.log(locObj)
+function onSelectLocation(lat,lng,id) {
+    console.log('lat:', lat)
+    console.log('lng:', lng)
+    mapService.getLocationName(lat,lng).then((locationName) =>{
+        document.querySelector(".location-name span").innerText = locationName
+    })
+    mapService.panTo(lat,lng)
+    const locObg = {lat, lng}
+    mapService.addMarker(locObg)
+    
 }
