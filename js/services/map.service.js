@@ -30,13 +30,6 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             console.log('Map!', gMap)
         })
         .then(() => {
-            gMap.addListener("center_changed", () => {
-                // 3 seconds after the center of the map has changed, pan back to the
-                // marker.
-                window.setTimeout(() => {
-                    gMap.panTo(gMarker.getPosition());
-                }, 3000);
-            });
             gMap.addListener("click", (mapsMouseEvent) => {
                     addMarker(mapsMouseEvent.latLng.toJSON())
                 });
