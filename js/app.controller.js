@@ -36,8 +36,8 @@ function onInit() {
                         })
                 })
             })
-        })
-        renderFilterByQueryStringParams()
+        }).then(()=> renderFilterByQueryStringParams())
+        
 }
 
 
