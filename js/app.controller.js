@@ -85,7 +85,7 @@ function renderLocCards(value) {
                 <div class="card" onclick="onSelectLocation(${lat}, ${lng}, '${id}')">
                     <h2 class="name">Name: <span>${name}</span></h2>
                     <button class="loc-remove-btn" onclick="onDeleteLocation('${id}', event)">🗑️</button>
-                    <div class="location-info flex space-between">
+                    <div class="location-info">
                         <h3 class="lat">Lat: <span>${lat}</span></h3>
                         <h3 class="lng">Lng: <span>${lng}</span></h3>
                     </div>
@@ -109,7 +109,7 @@ function onSelectLocation(lat, lng, id) {
     mapService.panTo(lat, lng)
     const locObg = { lat, lng }
     mapService.addMarker(locObg)
-
+    window.scrollTo(0, 0)
 }
 
 function onDeleteLocation(id, ev) {
