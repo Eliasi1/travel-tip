@@ -1,8 +1,11 @@
+import {placeService} from "./place.service.js"
+
 export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getLocationName
+    getLocationName,
+    getMap
 }
 
 
@@ -31,7 +34,13 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
         })
         .then(() => {
             gMap.addListener("click", (mapsMouseEvent) => {
-                    addMarker(mapsMouseEvent.latLng.toJSON())
+                let loc = mapsMouseEvent.latLng.toJSON()
+                    addMarker(loc)
+                    getLocationName(loc.lat,loc.lng).then((locationName) => {
+                        const locObj = {id:null,name: locationName, lat:loc.lat, lng:loc.lng, createdAt: Date.now(), updatedAt:null}
+                        placeService.save(locObj)
+                        
+                    })
                 });
         }
         )
@@ -69,4 +78,8 @@ function getLocationName(lat,lng){
     return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`)
     .then((value) => { return value.json()})
     .then((res)=> res.results[0].formatted_address)
+}
+
+function getMap(){
+    return Promise.resolve(gMap)
 }

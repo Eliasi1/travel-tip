@@ -21,6 +21,8 @@ function onInit() {
         .then(console.log)
 }
 
+    
+
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
     console.log('Getting Pos')
@@ -46,6 +48,9 @@ function onGetUserPos() {
             console.log('User position is:', pos.coords)
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+                mapService.panTo(pos.coords.latitude,pos.coords.longitude)
+                let locObj = {lat: pos.coords.latitude, lng: pos.coords.longitude }
+                mapService.addMarker(locObj)
         })
         .catch(err => {
             console.log('err!!!', err)
