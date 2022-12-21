@@ -92,8 +92,8 @@ function renderLocCards(value) {
         return `
                 <div class="card" onclick="onSelectLocation(${lat}, ${lng}, '${id}')">
                     <h2 class="name">Name: <span>${name}</span></h2>
-                    <button class="loc-remove-btn" onclick="onDeleteLocation('${id}', event)">🗑️</button>
-                    <button class="link-copt-btn" onclick="onCopyLink('${lat}', ${lng})">🔗</button>
+                    <button class="card-action-btn loc-remove-btn" onclick="onDeleteLocation('${id}', event)">🗑️</button>
+                    <button class="card-action-btn link-copy-btn" onclick="onCopyLink('${lat}', ${lng})">🔗</button>
                     <div class="location-info">
                         <h3 class="lat">Lat: <span>${lat}</span></h3>
                         <h3 class="lng">Lng: <span>${lng}</span></h3>
